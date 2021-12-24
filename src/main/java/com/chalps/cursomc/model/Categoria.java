@@ -1,5 +1,7 @@
 package com.chalps.cursomc.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -14,6 +16,8 @@ public class Categoria implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String name;
+
+    @JsonManagedReference
     @ManyToMany(mappedBy="categorias")
     private List<Produto> produtos = new ArrayList<>();
 
