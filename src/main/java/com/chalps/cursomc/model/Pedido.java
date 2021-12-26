@@ -3,7 +3,9 @@ package com.chalps.cursomc.model;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 public class Pedido implements Serializable {
@@ -23,15 +25,18 @@ public class Pedido implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "endereco_de_entrega_id")
-    private Endereco enderedoDeEntrega;
+    private Endereco enderecoDeEntrega;
+
+    @OneToMany(mappedBy = "id.pedido")
+    private Set<ItemPedido> itens = new HashSet<>();
 
     public Pedido(){}
 
-    public Pedido(Integer id, Date instante, Cliente cliente, Endereco enderedoDeEntrega) {
+    public Pedido(Integer id, Date instante, Cliente cliente, Endereco enderecoDeEntrega) {
         this.id = id;
         this.instante = instante;
         this.cliente = cliente;
-        this.enderedoDeEntrega = enderedoDeEntrega;
+        this.enderecoDeEntrega = enderecoDeEntrega;
     }
 
     public Integer getId() {
@@ -66,12 +71,20 @@ public class Pedido implements Serializable {
         this.cliente = cliente;
     }
 
-    public Endereco getEnderedoDeEntrega() {
-        return enderedoDeEntrega;
+    public Endereco getEnderecoDeEntrega() {
+        return enderecoDeEntrega;
     }
 
-    public void setEnderedoDeEntrega(Endereco enderedoDeEntrega) {
-        this.enderedoDeEntrega = enderedoDeEntrega;
+    public void setEnderecoDeEntrega(Endereco enderedoDeEntrega) {
+        this.enderecoDeEntrega = enderedoDeEntrega;
+    }
+
+    public Set<ItemPedido> getItens() {
+        return itens;
+    }
+
+    public void setItens(Set<ItemPedido> itens) {
+        this.itens = itens;
     }
 
     @Override
@@ -79,11 +92,14 @@ public class Pedido implements Serializable {
         if (this == o) return true;
         if (!(o instanceof Pedido)) return false;
         Pedido pedido = (Pedido) o;
-        return Objects.equals(id, pedido.id) && Objects.equals(instante, pedido.instante) && Objects.equals(pagamento, pedido.pagamento) && Objects.equals(cliente, pedido.cliente) && Objects.equals(enderedoDeEntrega, pedido.enderedoDeEntrega);
+        return Objects.equals(id, pedido.id) && Objects.equals(instante, pedido.instante) && Objects.equals(pagamento, pedido.pagamento) && Objects.equals(cliente, pedido.cliente) && Objects.equals(enderecoDeEntrega, pedido.enderecoDeEntrega);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, instante, pagamento, cliente, enderedoDeEntrega);
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((id == null) ? 0 : id.hashCode());
+        return result;
     }
 }
